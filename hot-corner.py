@@ -16,8 +16,8 @@ gi.require_version("Gdk", "3.0")
 from gi.repository import Gdk, GLib  # noqa: E402
 
 CORNER_PX = 2       # how close to the corner counts as "in" it
-DWELL = 0.4         # seconds the pointer has to rest there
-POLL_MS = 100
+DWELL = 0.15        # seconds the pointer has to rest there
+POLL_MS = 50
 SCRIPT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "switch-hosts.py")
 
 

@@ -3,7 +3,7 @@
 Move a Logitech MX mouse + keyboard between Easy-Switch slots from software.
 Slot 1 = Mac, slot 2 = Ubuntu. The machine you are *leaving* sends the command.
 
-Trigger: rest the pointer in a screen corner for ~0.4 s.
+Trigger: rest the pointer in a screen corner for a moment.
 - Ubuntu: top-right corner -> Mac
 - macOS: bottom-left corner -> Ubuntu
 
