@@ -3,15 +3,21 @@
 Move a Logitech MX mouse + keyboard between Easy-Switch slots from software.
 Slot 1 = Mac, slot 2 = Ubuntu. The machine you are *leaving* sends the command.
 
-## Ubuntu (once)
+Trigger: rest the pointer in a screen corner for ~0.4 s.
+- Ubuntu: top-right corner -> Mac
+- macOS: bottom-left corner -> Ubuntu
+
+## Ubuntu (once, X11 session)
     sudo ./install-ubuntu.sh
-Then reconnect the devices to Ubuntu once (press their slot-2 buttons).
-Shortcut Super+Alt+S is already registered in GNOME -> runs `switch-hosts.py 1`.
+Then reconnect the devices to Ubuntu once (press their slot-2 buttons) and log
+out/in. The corner watcher (`hot-corner.py`) starts from
+`~/.config/autostart/logi-switch-corner.desktop`.
 
 ## macOS (once)
-Copy this folder to the Mac, then `./install-macos.sh`.
-Hammerspoon binds Cmd+Alt+S -> runs `switch-hosts.py 2`.
+Copy this folder to the Mac, then `./install-macos.sh` and reload Hammerspoon.
+It writes `~/.hammerspoon/logi_switch.lua` and requires it from `init.lua`.
 
 ## Check / debug
-    python3 switch-hosts.py --list     # which slot each device is on
-    python3 switch-hosts.py 2          # send everything to slot 2
+    /usr/bin/python3 switch-hosts.py --list     # which slot each device is on
+    /usr/bin/python3 switch-hosts.py 2          # send everything to slot 2
+On Ubuntu use `/usr/bin/python3`: that is the interpreter `python3-hid` is installed for.

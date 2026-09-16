@@ -99,6 +99,8 @@ def main():
             print(f"{info.get('product_string') or 'device'}: {err}", file=sys.stderr)
             continue
         name = info.get("product_string") or f"pid {info['product_id']:#06x}"
+        # Receivers (Unifying/Bolt/Nano) are 0xC5xx and host up to 6 devices.
+        is_receiver = info["product_id"] & 0xFF00 == 0xC500
         try:
             # Bluetooth device first, then receiver slots 1-6.
             for device_index in (DEVICE_INDEX_BT, 1, 2, 3, 4, 5, 6):
@@ -120,7 +122,7 @@ def main():
                         print(f"{name}: {err}")
                         continue
                     print(f"{name}: sent switch to slot {target + 1}")
-                if device_index == DEVICE_INDEX_BT:
+                if not is_receiver:
                     break  # Bluetooth devices answer on every index; don't repeat.
         finally:
             dev.close()
