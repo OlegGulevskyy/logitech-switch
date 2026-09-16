@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 """Tell every connected Logitech HID++ device to hop to another Easy-Switch slot.
 
 Usage: switch-hosts.py <slot>        slot is 1, 2 or 3 as printed on the device
@@ -16,6 +16,12 @@ try:
     import hidraw as hid
 except ImportError:
     import hid  # pip: hid (needs libhidapi)
+
+# hidapi on macOS opens devices exclusively by default, which is refused for
+# keyboards/mice ("privilege violation") and would fight Logi Options+.
+_lib = getattr(hid, "hidapi", None)
+if _lib is not None and hasattr(_lib, "hid_darwin_set_open_exclusive"):
+    _lib.hid_darwin_set_open_exclusive(0)
 
 LOGITECH_VID = 0x046D
 REPORT_LONG = 0x11
@@ -89,7 +95,8 @@ def main():
     for info in candidates():
         try:
             dev = open_device(info)
-        except Exception:
+        except Exception as err:
+            print(f"{info.get('product_string') or 'device'}: {err}", file=sys.stderr)
             continue
         name = info.get("product_string") or f"pid {info['product_id']:#06x}"
         try:
